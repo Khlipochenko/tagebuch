@@ -8,7 +8,9 @@ const app= express()
 app.use(express.json())
 app.use(cors())
 //app.use('/users', userRouter)
-app.get('/',(req,res, next)=>res.send('API work'))
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Hello from Vercel!' });
+  });
 
 app.use((err, req,res,next)=>{
     console.log(err);
