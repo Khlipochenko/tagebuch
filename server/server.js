@@ -19,3 +19,4 @@ const PORT=process.env.PORT ||5000
 connect().then(()=>{
     app.listen (PORT, ()=> console.log(`Server läuft auf http://localhost:${PORT}`))
 })
+export default app;
