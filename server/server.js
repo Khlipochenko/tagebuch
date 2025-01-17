@@ -11,6 +11,9 @@ app.use(cors())
 app.get('/', (req, res) => {
     res.status(200).json({ message: 'Hello from Vercel!' });
   });
+  app.get('/test', (req, res) => {
+    res.status(200).json({ message: 'Hello from test!' });
+  });
 
 app.use((err, req,res,next)=>{
     console.log(err);
