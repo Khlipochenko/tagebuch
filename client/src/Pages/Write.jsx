@@ -44,13 +44,13 @@ async function handleOnSubmit(e){
       });
       const result = await response.json();
 
-      if (!result.success) {
+      // if (!result.success) {
         
-        alert(result.message);
-      } else {
-        alert(result.message)
+      //   alert(result.message);
+      // } else {
+      //   alert(result.message)
         
-      }
+      console.log(result);
       form.reset();
     } catch (error) {
       console.error(error);
