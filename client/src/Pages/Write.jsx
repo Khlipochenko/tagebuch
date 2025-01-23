@@ -31,7 +31,8 @@ async function handleOnSubmit(e){
   formData.append('datum', datum)
   formData.append('images', files)
    
-    
+ console.log('form data', formData);  
+
 
     try {
       const response = await fetch(`${url}users/write`, {
