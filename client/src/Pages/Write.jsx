@@ -50,10 +50,9 @@ async function handleOnSubmit(e){
       });
       const result = await response.json()
        if (!result.ok) {
-        
-         alert(result.message);
+        console.log(result);
        } else {
-         alert(result.message)
+         alert('succsess')
         
       console.log(result);
       
