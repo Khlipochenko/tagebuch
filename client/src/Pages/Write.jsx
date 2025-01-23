@@ -30,7 +30,7 @@ async function handleOnSubmit(e){
     const formData=new FormData()
  
    formData.append('title', title)
-   formData.append('text', descriptionStr)
+   formData.append('text', String(descriptionStr))
   formData.append('datum', datum)
   if(files!=[]){
   files.forEach((file)=>{

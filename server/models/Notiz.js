@@ -6,8 +6,7 @@ const NotizSchema= new Schema({
     },
     text:{
         type:String,
-        required:true,
-        maxlength:1000,
+       
     },
     datum:{
         type:String,
