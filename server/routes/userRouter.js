@@ -6,7 +6,7 @@ userRouter.post('/write',async(req,res,next)=>{
     const  {title, text, datum, images}=req.body
     try{
     await Notiz.create({
-    title, text,datum,images,userId
+    title, text,datum,userId
    }
 
 )
