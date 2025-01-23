@@ -18,6 +18,7 @@ export const Write = () => {
   const [datum, setDatum] = useState(moment().format("YYYY-MM-DD"));
   const editorRef = useRef("");
   const quillRef = useRef("");
+
 async function handleOnSubmit(e){
     e.preventDefault()
     const token=await getToken()
@@ -29,10 +30,11 @@ async function handleOnSubmit(e){
    formData.append('title', title)
    formData.append('text', descriptionStr)
   formData.append('datum', datum)
+  if(files!=[]){
   files.forEach((file)=>{
     formData.append('images', file)
-  })
- 
+  })}
+
    
  console.log('form data', formData);  
 
@@ -47,19 +49,19 @@ async function handleOnSubmit(e){
         },
       });
       const result = await response.json()
-      // if (!result.success) {
+       if (!result.ok) {
         
-      //   alert(result.message);
-      // } else {
-      //   alert(result.message)
+         alert(result.message);
+       } else {
+         alert(result.message)
         
       console.log(result);
-      form.reset();
-    } catch (error) {
+      
+    }} catch (error) {
       console.error(error);
     }
+  
   }
-
 
 function handleOnChangeAddFotos(e) {
     const newFoto=e.target.files[0]
