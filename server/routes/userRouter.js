@@ -10,7 +10,10 @@ userRouter.post('/write',async(req,res,next)=>{
         const user= User.findById(userId)
         if(user){
     await Notiz.create({
-    title, text,datum,userId:user._id
+    title:title, 
+    text:text,
+    datum:datum,
+    userId:user._id
    }
 
 )}
