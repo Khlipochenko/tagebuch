@@ -29,7 +29,10 @@ async function handleOnSubmit(e){
    formData.append('title', title)
    formData.append('text', descriptionStr)
   formData.append('datum', datum)
-  formData.append('images', files)
+  files.forEach((file)=>{
+    formData.append('images', file)
+  })
+ 
    
  console.log('form data', formData);  
 
@@ -39,7 +42,7 @@ async function handleOnSubmit(e){
         method: "POST",
         body: formData,
         headers: {
-          "Content-Type": "application/json",
+         
           "Authorization":`${token}`
         },
       });
