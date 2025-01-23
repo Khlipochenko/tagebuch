@@ -1,22 +1,63 @@
 import Quill from "quill";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import "quill/dist/quill.snow.css";
 import { RiImageAddLine } from "react-icons/ri";
 import moment from "moment";
 import { TiDelete } from "react-icons/ti";
+import { AppContext } from "../context/AppContext";
+import { useUser , useAuth} from "@clerk/clerk-react";
+
+
 export const Write = () => {
+  const {user}=useUser()
+  const {getToken}=useAuth()
+  const {url}=useContext(AppContext)
   const [title, setTitle] = useState("");
 
   const [files, setFiles] = useState([]);
   const [datum, setDatum] = useState(moment().format("YYYY-MM-DD"));
   const editorRef = useRef("");
   const quillRef = useRef("");
-function handleOnSubmit(e){
+async function handleOnSubmit(e){
     e.preventDefault()
+    const token=await getToken()
+    console.log(token);
     const description=quillRef.current.getContents()
     const descriptionStr=JSON.stringify(description)
     console.log(descriptionStr);
-}
+    const data={
+      title:title,
+      text:descriptionStr,
+      datum:datum,
+      images: files
+
+    }
+
+    try {
+      const response = await fetch(`${url}users/write`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization":`Bearer ${token}`
+        },
+      });
+      const result = await response.json();
+
+      if (!result.success) {
+        
+        alert(result.message);
+      } else {
+        alert(result.message)
+        
+      }
+      form.reset();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
 function handleOnChangeAddFotos(e) {
     const newFoto=e.target.files[0]
     console.log('newFoto',newFoto);
@@ -29,6 +70,9 @@ function handleOnClickDeleteImage(index) {
   const newFiles=files.filter((image, i)=>i!==index)
   setFiles(newFiles)
 }
+
+
+
   useEffect(() => {
     //Initiate Qill only once
     if (!quillRef.current && editorRef.current) {
@@ -38,6 +82,7 @@ function handleOnClickDeleteImage(index) {
     }
   }, []);
   return (
+    <>
     <form onSubmit={(e)=>handleOnSubmit(e)} className="flex flex-col items-center justify-center w-2/4 mx-auto mt-12">
       <label className="self-start" for="date">
         Datum:
@@ -89,5 +134,8 @@ function handleOnClickDeleteImage(index) {
         </button>
       </div>
     </form>
+
+   
+</>
   );
 };
