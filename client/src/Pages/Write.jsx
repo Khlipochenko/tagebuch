@@ -24,9 +24,11 @@ async function handleOnSubmit(e){
     const token=await getToken()
     console.log(token);
     const description=quillRef.current.getContents()
-    const descriptionStr=JSON.stringify(description)
+    const descriptionStr=quillRef.current.getText();
+    console.log(datum);
     console.log(descriptionStr);
     const formData=new FormData()
+ 
    formData.append('title', title)
    formData.append('text', descriptionStr)
   formData.append('datum', datum)
