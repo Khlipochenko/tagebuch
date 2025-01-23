@@ -7,7 +7,11 @@ userRouter.post('/write',async(req,res,next)=>{
     try{
     await Notiz.create({
     title, text,datum,images,userId
-   })}catch(e){
+   }
+
+)
+res.sendStatus(201)
+}catch(e){
     console.log(error);
     rex.status(400).json(error)
    }

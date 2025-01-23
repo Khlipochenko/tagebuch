@@ -48,7 +48,7 @@ async function handleOnSubmit(e){
           "Authorization":`Bearer ${token}`
         },
       });
-      const result = await response.json()
+      const result = await response.blob()
        if (!result.ok) {
         console.log(result);
        } else {
