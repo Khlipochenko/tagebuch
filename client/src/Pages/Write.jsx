@@ -39,7 +39,7 @@ async function handleOnSubmit(e){
         body: formData,
         headers: {
           "Content-Type": "application/json",
-          "Authorization":`Bearer ${token}`
+          "Authorization":`${token}`
         },
       });
       const result = await response.json()
