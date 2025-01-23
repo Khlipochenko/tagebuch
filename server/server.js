@@ -9,8 +9,13 @@ dotenv.config()
 const app= express()
 app.use(express.json())
 app.use(cors())
-app.use(clerkMiddleware())
-
+const clerkOptions = {
+    publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+  };
+  
+  app.use(clerkMiddleware(clerkOptions));
+const PUBLISHABLE_KEY = process.env.CLERK_PUBLISHABLE_KEY;
+console.log(PUBLISHABLE_KEY);
 app.use('/users', userRouter)
 app.get('/',(req,res)=>res.send('API Working'))
 app.post('/webhooks', clerkWebhooks)
@@ -19,6 +24,7 @@ app.use((err, req,res,next)=>{
     return res.sendStatus(500)
 })
 const PORT=process.env.PORT ||5000
+console.log(PORT);
 connect().then(()=>{
     app.listen (PORT, ()=> console.log(`Server läuft auf http://localhost:${PORT}`))
 })
