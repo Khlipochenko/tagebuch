@@ -25,18 +25,18 @@ async function handleOnSubmit(e){
     const description=quillRef.current.getContents()
     const descriptionStr=JSON.stringify(description)
     console.log(descriptionStr);
-    const data={
-      title:title,
-      text:descriptionStr,
-      datum:datum,
-      images: files
-
-    }
+    const formData=new FormData()
+   formData.append('title', title)
+   formData.append('text', descriptionStr)
+  formData.append('datum', datum)
+  formData.append('images', files)
+   
+    
 
     try {
       const response = await fetch(`${url}users/write`, {
         method: "POST",
-        body: JSON.stringify(data),
+        body: formData,
         headers: {
           "Content-Type": "application/json",
           "Authorization":`Bearer ${token}`
