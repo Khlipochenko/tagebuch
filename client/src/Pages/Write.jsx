@@ -45,7 +45,7 @@ async function handleOnSubmit(e){
         body: formData,
         headers: {
          
-          "Authorization":`${token}`
+          "Authorization":`Bearer ${token}`
         },
       });
       const result = await response.json()
