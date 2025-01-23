@@ -13,7 +13,7 @@ userRouter.post('/write',async(req,res,next)=>{
 res.sendStatus(201)
 }catch(e){
     console.log(error);
-    rex.status(400).json(error)
+    res.status(400).json(error)
    }
 
 })
