@@ -13,15 +13,15 @@ export const notizSchreiben=async(req,res,next)=>{
     try{
         const user= User.findById(userId)
         if(user){
-            if(images){
-     const imagesUpload=await cloudinary.uploader.upload(images.path)  }    
+          
+    const imagesUpload=await cloudinary.uploader.upload(images.path)   
     await Notiz.create({
     title:title, 
     text:text,
     datum:datum,
     userId:user._id,
     images:imagesUpload.secure_url
-   }
+   }  
 
 )}
 else{
