@@ -53,7 +53,7 @@ async function handleOnSubmit(e){
       });
       const result = await response.blob()
        if (!result.ok) {
-        console.log(result);
+        alert('false');
        } else {
          alert('succsess')
         
