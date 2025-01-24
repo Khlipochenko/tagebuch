@@ -28,7 +28,7 @@ export const notizSchreiben=async(req,res,next)=>{
     title:title, 
     text:text,
     datum:datum,
-    userId:user._id,
+    userId:userId,
     images:uploadedImages
    }  
 
