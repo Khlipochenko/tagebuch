@@ -33,8 +33,8 @@ async function handleOnSubmit(e){
    formData.append('text', String(descriptionStr))
   formData.append('datum', datum)
   if(files.length>0){
-  files.forEach((file)=>{
-    formData.append('images', file)
+  files.forEach((img)=>{
+    formData.append('images', img)
   })}
 
    
@@ -51,7 +51,7 @@ async function handleOnSubmit(e){
           "Authorization": `Bearer ${token}`,
         },
       });
-      const result = await response.blob()
+      const result = await response.json()
        if (!result.ok) {
         alert('false');
        } else {

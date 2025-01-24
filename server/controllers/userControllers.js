@@ -16,7 +16,7 @@ export const notizSchreiben=async(req,res,next)=>{
             let uploadedImages = [];
             if (images && images.length > 0) {
                
-                // Bilder nacheinander hochladen (kein Promise.all)
+                
                 for (let i = 0; i < images.length; i++) {
                   const uploadResult = await cloudinary.uploader.upload(images[i].path); // Der 'path' wird verwendet, um das Bild hochzuladen
                   uploadedImages.push(uploadResult.secure_url); // Die URL des hochgeladenen Bildes speichern
