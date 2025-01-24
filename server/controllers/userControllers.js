@@ -36,7 +36,7 @@ export const notizSchreiben=async(req,res,next)=>{
 else{
     res.status(404).json({success:false, message:'User not found'})
 }
-res.sendStatus(201)
+res.status(201).json({success:true, message:"Neue Notiz hinzugefügt"})
 }catch(error){
     console.log(error);
     res.status(400).json(error)

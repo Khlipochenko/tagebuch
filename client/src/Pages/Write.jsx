@@ -52,10 +52,10 @@ async function handleOnSubmit(e){
         },
       });
       const result = await response.json()
-       if (!result.ok) {
+       if (!result.success) {
         alert('false');
        } else {
-         alert('succsess')
+         alert(result.message)
         
       console.log(result);
       
