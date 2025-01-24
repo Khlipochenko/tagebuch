@@ -13,7 +13,7 @@ const NotizSchema= new Schema({
         required:true
     }, 
     userId:{
-        type: Schema.Types.ObjectId,
+        type: String,
         ref:'user'
     },
     images:[{
