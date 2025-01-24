@@ -132,7 +132,7 @@ function handleOnClickDeleteImage(index) {
             type="file"
            
             id="file"
-            name="file"
+            name="images"
           />
         </label>
 
