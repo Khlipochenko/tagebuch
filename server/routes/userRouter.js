@@ -6,9 +6,8 @@ userRouter.post('/write',async(req,res,next)=>{
     const userId=req.auth.userId
     
     const  {title, text, datum, images}=req.body
-    if(!text || !datum){
-        res.status(400).json({success:false, message:'Datum und text ist required'})
-    }
+    console.log('req', req);
+  
     try{
         const user= User.findById(userId)
         if(user){

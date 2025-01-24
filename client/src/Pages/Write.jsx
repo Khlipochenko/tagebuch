@@ -32,13 +32,15 @@ async function handleOnSubmit(e){
    formData.append('title', title)
    formData.append('text', String(descriptionStr))
   formData.append('datum', datum)
-  if(files!=[]){
+  if(files.length>0){
   files.forEach((file)=>{
     formData.append('images', file)
   })}
 
    
- console.log('form data', formData);  
+  for (let [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
 
 
     try {
@@ -46,8 +48,7 @@ async function handleOnSubmit(e){
         method: "POST",
         body: formData,
         headers: {
-         
-          "Authorization":`Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
       });
       const result = await response.blob()
