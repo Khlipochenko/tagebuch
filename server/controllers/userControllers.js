@@ -13,14 +13,23 @@ export const notizSchreiben=async(req,res,next)=>{
     try{
         const user= User.findById(userId)
         if(user){
+            let uploadedImages = [];
+            if (images && images.length > 0) {
+               
+                // Bilder nacheinander hochladen (kein Promise.all)
+                for (let i = 0; i < images.length; i++) {
+                  const uploadResult = await cloudinary.uploader.upload(images[i].path); // Der 'path' wird verwendet, um das Bild hochzuladen
+                  uploadedImages.push(uploadResult.secure_url); // Die URL des hochgeladenen Bildes speichern
+                }
+              }
           
-    const imagesUpload=await cloudinary.uploader.upload(images.path)   
+   
     await Notiz.create({
     title:title, 
     text:text,
     datum:datum,
     userId:user._id,
-    images:imagesUpload.secure_url
+    images:uploadedImages
    }  
 
 )}
