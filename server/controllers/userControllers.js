@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import { User } from "../models/Users.js";
-import Notiz from '../models/Notiz.js'
+import {Notiz} from '../models/Notiz.js'
 
 //Notiz speichern
 export const notizSchreiben=async(req,res,next)=>{
