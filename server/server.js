@@ -5,10 +5,12 @@ import {connect }from './utils/connect.js'
 import { userRouter } from './routes/userRouter.js'
 import { clerkWebhooks } from './controllers/webhooks.js'
 import { clerkMiddleware } from '@clerk/express'
+import { connectCloudinary } from './utils/cloudinary.js'
 dotenv.config()
 const app= express()
 app.use(express.json())
 app.use(cors())
+await connectCloudinary()
 const clerkOptions = {
     publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
   };

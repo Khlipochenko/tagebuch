@@ -12,7 +12,8 @@ export const notizSchreiben=async(req,res,next)=>{
     try{
         const user= User.findById(userId)
         if(user){
-     const imagesUpload=await cloudinary.uploader.upload(images.path)      
+            if(images){
+     const imagesUpload=await cloudinary.uploader.upload(images.path)  }    
     await Notiz.create({
     title:title, 
     text:text,
