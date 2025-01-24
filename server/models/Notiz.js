@@ -16,9 +16,9 @@ const NotizSchema= new Schema({
         type: Schema.Types.ObjectId,
         ref:'user'
     },
-    images:{
+    images:[{
         type:String
-    }
+    }]
 },
 { timestamps: true })
 
