@@ -11,7 +11,7 @@ export const notizSchreiben=async(req,res,next)=>{
     console.log('req', req);
   
     try{
-        const user= User.findById(userId)
+        const user=await  User.findById(userId)
         if(user){
             let uploadedImages = [];
             if (images && images.length > 0) {
