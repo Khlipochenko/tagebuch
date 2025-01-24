@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import { User } from "../models/Users";
+import { User } from "../models/Users.js";
 
 //Notiz speichern
 export const notizSchreiben=async(req,res,next)=>{
