@@ -28,7 +28,7 @@ export const notizSchreiben=async(req,res,next)=>{
     title:title, 
     text:text,
     datum:datum,
-    userId:userId,
+    userId:user._id,
     images:uploadedImages
    }  
 
@@ -36,7 +36,7 @@ export const notizSchreiben=async(req,res,next)=>{
 else{
     res.status(404).json({success:false, message:'User not found'})
 }
-res.status(201).json({success:true, message:userId})
+res.status(201).json({success:true, message:user.name})
 }catch(error){
     console.log(error);
     res.status(400).json(error)
