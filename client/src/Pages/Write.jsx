@@ -5,12 +5,11 @@ import { RiImageAddLine } from "react-icons/ri";
 import moment from "moment";
 import { TiDelete } from "react-icons/ti";
 import { AppContext } from "../context/AppContext";
-import { useUser , useAuth} from "@clerk/clerk-react";
 
+//const{ userData}=useContext(AppContext)
 
 export const Write = () => {
-  const {user}=useUser()
-  const {getToken}=useAuth()
+
   const {url}=useContext(AppContext)
   const [title, setTitle] = useState("");
 

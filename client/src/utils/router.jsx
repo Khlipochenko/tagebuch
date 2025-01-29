@@ -4,6 +4,8 @@ import { Layout } from "../components/Layout";
 import { createBrowserRouter } from "react-router-dom";
 import { Home } from "../Pages/Home";
 import { Write } from "../Pages/Write";
+import { VerifizierungPage } from "../Pages/VerifizierungPage";
+import { EmailBestatigungSeite } from "../Pages/EmailBestärigungPage";
 export const router=createBrowserRouter([{
 
     path:'/',
@@ -19,8 +21,16 @@ children:[
         element:<Home></Home>
     },
     {
+        path:"/verify/:ver",
+        element:<VerifizierungPage></VerifizierungPage>
+    },
+    {
         path:"/write",
         element:<Write></Write>
+    },
+    {
+        path:"/email",
+        element:<EmailBestatigungSeite></EmailBestatigungSeite>
     }
 ]
 

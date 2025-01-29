@@ -1,0 +1,56 @@
+import {NavLink,  useNavigate, useParams} from 'react-router-dom'
+import { useEffect, useState } from 'react'
+export const VerifizierungPage=()=>{
+const {ver}=useParams()
+    
+ 
+    const [state, setState]=useState('Verifizierung ist nicht erfolgreich')
+    const [isVirify, setIsVirify]=useState(false)
+    useEffect(()=>{
+        const verifyUser=async()=>{
+         
+            try{
+                const response= await fetch(`http://localhost:8000/users/verify/${ver}`)
+            const data=await response.json()
+            if(data.success){
+
+                setState('Erfolgreich verifiziert!')
+                setIsVirify(true)
+               
+            }
+            // else {
+              
+            //     setState('Verifizierung ist nicht erfolgreich');
+            // }
+            }catch(e){
+
+               console.error(error);
+                setState('Es gab ein Problem bei der Verifizierung.');
+            }
+        }
+    verifyUser()
+    },[ver]
+
+
+)
+    return(
+        <>
+        <div >
+        <h1 className=' text-center text-2xl font-medium mt-10 text-green-900'>Verifizierung</h1>
+        {isVirify?<div className='contaiter gap-2 flex items-center mt-10 flex-col h-screen text-lg'><p className=' text-green-600 font-medium'>{state} </p>
+        <p> Jetzt gehen Sie bitte zur Homeseite und da konnen sie sich einloggen!
+       
+        </p>
+        <button className=' mt-10 drop-shadow-lg  py-1 rounded bg-teal-500  text-white sm:hover:bg-teal-900 w-24'>
+        <NavLink to='/home'>Home</NavLink></button>
+        </div>
+        :
+        <p className=' text-red-600 font-medium'> Verifizierung ist nicht erfolgreich</p>
+        }
+       
+        </div>
+        </>
+        
+
+    )
+}
