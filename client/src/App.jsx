@@ -4,12 +4,11 @@ import { router } from './utils/router'
 function App() {
 
   return (
-    <RouterProvider router={router}>
+ //   <RouterProvider router={router}>
     <>
-    <div>
-  <Calendar></Calendar></div>
+  
     </>
-    </RouterProvider>
+ //   </RouterProvider>
   )
 }
 

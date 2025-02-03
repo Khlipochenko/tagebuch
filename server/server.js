@@ -7,9 +7,12 @@ import cookieParser from "cookie-parser";
 // import { clerkWebhooks } from './controllers/webhooks.js'
 // import { clerkMiddleware } from '@clerk/express'
 import { connectCloudinary } from './utils/cloudinary.js'
+
+import { notizRouter } from './routes/notizRouter.js'
 dotenv.config()
 const app= express()
 app.use(express.json())
+
 app.use(cors( {
     credentials: true,
     origin: ['http://localhost:5173'],
@@ -26,6 +29,7 @@ await connectCloudinary()
 // const PUBLISHABLE_KEY = process.env.CLERK_PUBLISHABLE_KEY;
 // console.log(PUBLISHABLE_KEY);
 app.use('/users', userRouter)
+app.use('/notizen', notizRouter)
 app.get('/',(req,res)=>res.send('API Working'))
 // app.post('/webhooks', clerkWebhooks)
 app.use((err, req,res,next)=>{

@@ -6,6 +6,8 @@ import { Home } from "../Pages/Home";
 import { Write } from "../Pages/Write";
 import { VerifizierungPage } from "../Pages/VerifizierungPage";
 import { EmailBestatigungSeite } from "../Pages/EmailBestärigungPage";
+import { NotizPage } from "../Pages/NotizPage";
+import { EditPage } from "../Pages/EditPage";
 export const router=createBrowserRouter([{
 
     path:'/',
@@ -31,7 +33,15 @@ children:[
     {
         path:"/email",
         element:<EmailBestatigungSeite></EmailBestatigungSeite>
+    },
+    {
+        path:"/notiz/:id",
+        element:<NotizPage></NotizPage>
+    },{
+        path:"/edit/:id",
+        element:<EditPage/>
     }
+    
 ]
 
 

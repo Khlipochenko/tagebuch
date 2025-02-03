@@ -48,7 +48,13 @@ const userSchema=new Schema({
             }
         }
 
-    }
+    }, 
+    notizenId:[
+        {
+            type:Schema.Types.ObjectId,
+            ref: 'notiz'
+        }
+    ]
 
 })
 userSchema.methods.toJSON=function(){
@@ -58,8 +64,10 @@ userSchema.methods.toJSON=function(){
     return obj
 }
 
-userSchema.pre('save', function(){
+userSchema.pre('save', function(next){
+    if (this.isModified('password')) {
     const salt=bcrypt.genSaltSync(10)
-    this.password=bcrypt.hashSync(this.password, salt)
+    this.password=bcrypt.hashSync(this.password, salt)}
+    next()
 })
 export const User=model('User', userSchema)

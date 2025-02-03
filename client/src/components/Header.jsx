@@ -3,6 +3,7 @@ import logo from '../assets/logo.png'
 //import { SignedIn, SignedOut, SignInButton, useAuth, useClerk, UserButton, useUser } from '@clerk/clerk-react'
 import { AppContext } from '../context/AppContext'
 import { LoginUser } from './LoginUser'
+import { Logout } from './Logout'
 
 export const Header=()=>{
 const{isLogin, setIsLogin,
@@ -24,15 +25,18 @@ const{isLogin, setIsLogin,
   //   },[userData])
 
    return(
-    <div className='flex w-full px-3 justify-between shadow-md  py-3 bg-teal-800'>
+    <div className='flex w-full px-3 justify-between shadow-md  py-3 bg-teal-800 fixed z-50'>
     <div className=" rounded-full aspect-square w-10 bg-[url('./assets/logo.png')] bg-cover  bg-center "></div>
          
 
 <div className='self-center'>
 
 {isLogin?
-(<div className='flex gap-4 '>
-<p className='max-sm:hidden  text-slate-100 first-letter:uppercase  '> Hallo, {userData.name[0].toUpperCase()+userData.name.slice(1).toLowerCase()} </p>
+(<div className='flex gap-4 items-center '>
+<p className='max-sm:hidden  text-slate-100 first-letter:uppercase  '> Hallo, {userData.name[0].toUpperCase()+userData.name.slice(1)} </p>
+<Logout></Logout>
+
+
       {/* <UserButton /> */}
     </div>):(
 

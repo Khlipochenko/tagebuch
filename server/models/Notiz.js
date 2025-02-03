@@ -8,9 +8,14 @@ const NotizSchema= new Schema({
         type:String,
        
     },
-    datum:{
+    
+    onlyText:{
         type:String,
-        required:true
+       
+    },
+    datum:{
+        type:Date,
+     //   required:true
     }, 
     userId:{
         type: Schema.Types.ObjectId,
@@ -18,7 +23,8 @@ const NotizSchema= new Schema({
     },
     images:[{
         type:String
-    }]
+    }],
+    
 },
 { timestamps: true })
 

@@ -5,7 +5,7 @@ import { AppContext } from "../context/AppContext";
 import { GoogleLogin, } from "@react-oauth/google";
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
-
+import { useFetch } from "../hooks/useFetch";
 export const LoginUser = () => {
 const navigate=useNavigate()
 
@@ -80,7 +80,8 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
                 setFormSuccess(false)
            
                 setLoginModus(false)
-            }, 3000)
+                navigate('/home')
+            }, 2000)
         }catch(e){
             console.log(e)
         }
@@ -222,7 +223,7 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
  
 //LOGIN                   
                    loginModus &&
-                    <div className="fixed inset-0 h-screen w-screen backdrop-blur-sm bg-black/30 flex flex-col justify-center items-center z-10">
+                    <div className="fixed inset-0 h-screen w-screen backdrop-blur-sm bg-black/30 flex flex-col justify-center items-center z-50">
                         {formError && <Alert severity="error" className=" my-2">{alertText}</Alert>}
                         {formSuccess && <Alert severity="success" className=" my-2">{alertText}</Alert>}
                        {!LoginErforglech&& <div className="bg-white rounded-xl  p-10   w-96 relative">
@@ -230,9 +231,9 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
                             {state === 'Login' ?
                                 <form onSubmit={(e) => onSubmitHandle(e)} className="flex flex-col gap-2" >
                                     <span onClick={() => setLoginModus(false)} className="absolute top-1 right-4 cursor-pointer  text-teal-700 sm:hover:text-red-800 font-medium">x</span>
-                                    <label for="email"> Email</label>
+                                    <label htmlFor="email"> Email</label>
                                     <input className=" border p-2 rounded outline-none "  name="email" type="email" placeholder="exaple@gmail.com" onChange={e=>setEmail(e.target.value)} value={email} />
-                                    <label for="password">Passwort</label>
+                                    <label htmlFor="password">Passwort</label>
                                     <div className="flex border p-2 rounded items-center justify-between">
                                     <input className="outline-none"  name="password" type={passwortZeigen1 ? "text" : 'password'}
                                      placeholder=" dein passwort"
@@ -248,18 +249,18 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
 //REGESTRIRUNGFORM
                                 <form onSubmit={(e) => onSubmitHandleSignUp(e)} className="flex flex-col gap-2" >
                                     <span onClick={() => setLoginModus(false)} className="absolute top-1 right-4 cursor-pointer  text-teal-700 sm:hover:text-red-800 font-medium">x</span>
-                                    <label for="name"> Vor- und Nachname</label>
+                                    <label htmlFor="name"> Vor- und Nachname</label>
                                     <input className=" border p-2 rounded outline-none " id="name" name="name" type="name" placeholder="Vor- und Nachname"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                     />
-                                    <label for="email"> Email</label>
+                                    <label htmlFor="email"> Email</label>
                                     <input className=" border p-2 rounded outline-none " name="email" type="email" placeholder="exaple@gmail.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                     />
-                                    <label for="password">Passwort</label>
+                                    <label htmlFor="password">Passwort</label>
                                     <div className={`flex border p-2 rounded items-center justify-between ${ isPasswordStrong=== 'no' && 'border-red-500'}`}>
                                         <input className="outline-none" id="password" name="password" type={passwortZeigen ? "text" : 'password'} placeholder=" dein passwort"
                                             value={password}
@@ -271,7 +272,7 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
                                             
                                         </div>
                                        {isPasswordFieldInFocus&& <p className="m-0 text-xs text-teal-700">Das Passwort muss mindestens 8 Zeichen lang sein und mindestens 1 Sonderzeichen, 1 Großbuchstaben und 1 Zahl enthalten</p>}
-                                    <label for="password">Passwort bestätigen</label>
+                                    <label htmlFor="password">Passwort bestätigen</label>
                                     <div className={`flex border p-2 rounded items-center justify-between ${isPassordEqual === 'no' && 'border-red-500'}`} >
                                         <input className="outline-none" id="password2" name="password2"
                                             type={passwortZeigen2 ? "text" : 'password'}
@@ -311,12 +312,16 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
                                     <span className=" mx-1 py-2">oder</span>
                                     <span className="border-b-2 w-28 inline-block"></span>
                                 </div>
-                                 <GoogleLogin onSuccess={(credentialResponse) => {
-                                    console.log(credentialResponse)
-                                }} onError={() => console.log('Login fail')}
-
-
-                                ></GoogleLogin> 
+                                <GoogleLogin
+  onSuccess={(credentialResponse) => {
+    if (credentialResponse.credential) {
+      console.log("Credential erhalten:", credentialResponse.credential);
+    } else {
+      console.log("Keine Credentials erhalten");
+    }
+  }}
+  onError={() => console.log('Login fehlgeschlagen')}
+/>
 
                             </div>
                             <div className="flex justify-end gap-2 mt-2 text-sm">

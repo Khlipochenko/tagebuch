@@ -5,32 +5,48 @@ import { RiImageAddLine } from "react-icons/ri";
 import moment from "moment";
 import { TiDelete } from "react-icons/ti";
 import { AppContext } from "../context/AppContext";
-
-//const{ userData}=useContext(AppContext)
-
+import { NavLink, useNavigate } from "react-router-dom";
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 export const Write = () => {
-
-  const {url}=useContext(AppContext)
+const navigate=useNavigate()
+  const {url, userData,fetchNotizen}=useContext(AppContext)
   const [title, setTitle] = useState("");
-
+  const [formSuccess, setFormSuccess] = useState(false)
+  const [formError, setFormError] = useState(false)
+  const [alertText, setAlertText] = useState('')
+  const [ AlertZeigen, setAlertZeigen]=useState(false)
   const [files, setFiles] = useState([]);
-  const [datum, setDatum] = useState(moment().format("YYYY-MM-DD"));
+  const [datum, setDatum] = useState(moment().format('YYYY-MM-DD'));
+const [isLoading, setIsloading]=useState(false)
   const editorRef = useRef("");
   const quillRef = useRef("");
+  
 
 async function handleOnSubmit(e){
     e.preventDefault()
-    const token=await getToken()
-    console.log(token);
-    const description=quillRef.current.getContents()
-    const descriptionStr=quillRef.current.getText();
-    console.log(datum);
-    console.log(descriptionStr);
+   
+    const descriptionStr=quillRef.current.root.innerHTML
+    const descriptionText=quillRef.current.getText();
+    console.log('length',descriptionText )
+if(descriptionText.length<2){
+  setAlertZeigen(true)
+  setFormError(true)
+  setAlertText('Bitte schreib etwas!')
+  setTimeout(()=>{
+    setFormError(false),
+    setAlertText('')
+    setAlertZeigen(false)
+  
+   }, 2000)
+   return
+}
     const formData=new FormData()
  
    formData.append('title', title)
    formData.append('text', String(descriptionStr))
   formData.append('datum', datum)
+  formData.append('onlyText',descriptionText)
   if(files.length>0){
   files.forEach((img)=>{
     formData.append('images', img)
@@ -43,18 +59,42 @@ async function handleOnSubmit(e){
 
 
     try {
+      setAlertZeigen(true)
+      setIsloading(true)
       const response = await fetch(`${url}users/write`, {
         method: "POST",
+        credentials:'include',
         body: formData,
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+        
       });
       const result = await response.json()
        if (!result.success) {
-        alert('false');
+      setIsloading(false)
+       setFormError(true)
+       setAlertText(result.message)
+       setTimeout(()=>{
+        setFormError(false),
+        setAlertText('')
+        setAlertZeigen(false)
+        navigate('/')
+       }, 2000)
        } else {
-         alert(result.message)
+        setIsloading(false)
+        setFormSuccess(true)
+        setAlertText(result.message)
+   
+        setTimeout(()=>{
+          quillRef.current.root.innerHTML=''
+          setTitle('')
+          setDatum(moment().format())
+          
+          setAlertZeigen(false)
+          setFormSuccess(false)
+          setAlertText('')
+          fetchNotizen()
+          navigate('/')
+        }, 2000)
+         
         
       console.log(result);
       
@@ -89,6 +129,16 @@ function handleOnClickDeleteImage(index) {
   }, []);
   return (
     <>
+   {AlertZeigen&&(
+<div className=" fixed inset-0 h-screen w-screen backdrop-blur-sm bg-black/30 flex flex-col justify-center items-center z-10">
+  {formError && <Alert severity="error" className=" my-2">{alertText}</Alert>}
+  {formSuccess && <Alert severity="success" className=" my-2">{alertText}</Alert>}
+  {isLoading&&  <CircularProgress color="inherit" />}
+</div>)}
+   
+      
+
+    <div className=" min-h-screen my-20 ">
     <form onSubmit={(e)=>handleOnSubmit(e)} className="flex flex-col items-center justify-center w-2/4 mx-auto mt-12">
       <label className="self-start" for="date">
         Datum:
@@ -112,10 +162,10 @@ function handleOnClickDeleteImage(index) {
         onChange={(e) => setTitle(e.target.value)}
       />
       <div className=" w-full h-60">
-        <div ref={editorRef}></div>
+        <div  ref={editorRef}></div>
       </div>
     
-      <div className="flex flex-wrap gap-4 mt-14">
+      <div className="flex flex-wrap gap-4 mt-24 max-sm:mt-24">
       {files.length>0&&
       files.map((image, index)=>(
         <div className="w-60 relative" key={index}>
@@ -129,7 +179,7 @@ function handleOnClickDeleteImage(index) {
           <input onChange={e=>handleOnChangeAddFotos(e)}
             className="hidden"
             type="file"
-           
+           accept="image/*"
             id="file"
             name="images"
           />
@@ -141,7 +191,7 @@ function handleOnClickDeleteImage(index) {
       </div>
     </form>
 
-   
-</>
+    <NavLink to='/home'  className='drop-shadow-lg px-4  py-1 rounded bg-rose-700  text-white sm:hover:bg-red-900 w-20 fixed bottom-20 right-7 '>Zurück</NavLink>
+</div></>
   );
 };

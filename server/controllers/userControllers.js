@@ -16,6 +16,7 @@ const MY_PASSWORD = process.env.MY_PASSWORD;
 export const userRegistirieren = async (req, res, next) => {
     try {
         const { name, email, password } = req.body
+    //    console.log('password register:', password)
         if (!name || !email || !password) {
             return res.status(400).json({ successs: false, message: 'Alle Felder müssen ausgefüllt werden' })
         }
@@ -123,10 +124,13 @@ export const userLogin=async(req,res,next)=>{
     try{
 
         const {email, password}=req.body
+   //     console.log('password login:', password)
         const user=await User.findOne({email})
         if(!user){
           return  res.status(404).json({success: false, message: `User mit ${email} nicht gefunden`})
         }
+  //      console.log('user.password',user.password)
+ //       console.log('vergleichen:',  bcrypt.compareSync(password, user.password))
         if(!bcrypt.compareSync(password, user.password)){
            return res.status(401). json({success:false,message: "Passwort ist nicht korrekt!"})
         }
@@ -140,7 +144,7 @@ const token=createToken(user.toJSON())
     sameSite:"lax",
     expires: new Date(Date.now() + 900000),
   })
-  return res.status(200).json({ success: true, message: `Willkommen ${user.name[0].toUpperCase()+user.name.slice(1).toLowerCase()}`, userData:user });
+  return res.status(200).json({ success: true, message: `Willkommen ${user.name[0].toUpperCase()+user.name.slice(1)}`, userData:user });
     }
     catch(e){
         next(e)
@@ -157,17 +161,35 @@ if(userData){
 }
 }
 
+//LOGOUT
+export const logout = async (req, res, next) => {
+    try{
+    res.clearCookie("tagebuch", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    });
+    res.end();}
+    catch(e){
+        next(e)
+
+    }
+  };
+
 //Notiz speichern
 export const notizSchreiben = async (req, res, next) => {
-    const userId = req.auth.userId
+   const userId=req.user._id
     const images = req.files
 
-    const { title, text, datum, } = req.body
-    console.log('req', req);
+    const { title, text, datum,onlyText } = req.body
+
 
     try {
         const user = await User.findById(userId)
-        if (user) {
+        if(!user){
+            return   res.status(404).json({ success: false, message: 'User not found' })
+        }
+      
             let uploadedImages = [];
             if (images && images.length > 0) {
 
@@ -179,20 +201,18 @@ export const notizSchreiben = async (req, res, next) => {
             }
 
 
-            await Notiz.create({
+           const newNotiz= await Notiz.create({
                 title: title,
                 text: text,
                 datum: datum,
                 userId: user._id,
-                images: uploadedImages
-            }
-
-            )
-        }
-        else {
-            res.status(404).json({ success: false, message: 'User not found' })
-        }
-        res.status(201).json({ success: true, message: user.name })
+                images: uploadedImages,
+               onlyText:onlyText
+                
+            }  )
+            user.notizenId.push(newNotiz._id)
+            await user.save()
+      return  res.status(201).json({ success: true, message: "Neuer Eintrag gespeichert" })
     } catch (error) {
        next(error)
     }
