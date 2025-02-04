@@ -1,7 +1,7 @@
 import { verifyToken } from "../utils/jwt.js";
 export function authorizeJwt(req,res,next){
     const token=req.cookies.tagebuch
-//console.log('tagebuch token',token);
+console.log('tagebuch token',token);
 
     if(!token) {
         return res.status(401).json({success:false, message:'Token nicht gefunden'}) 
@@ -11,5 +11,6 @@ export function authorizeJwt(req,res,next){
         return res.status(401).json({success:false, message:'Unathorized'})
     }
    req.user=isVerify
+   console.log(isVerify)
     next()
 }

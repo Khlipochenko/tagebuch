@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from "react"
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { AppContext } from "../context/AppContext";
-import { GoogleLogin, } from "@react-oauth/google";
+import { GoogleLogin } from '@react-oauth/google';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
-import { useFetch } from "../hooks/useFetch";
+
+
 export const LoginUser = () => {
 const navigate=useNavigate()
 
@@ -25,6 +26,63 @@ const navigate=useNavigate()
     const [alertText, setAlertText] = useState('')
 const [isPasswordFieldInFocus, setIsPasswordFieldInFocus]=useState(false)
 const [isPasswordStrong, setIsPasswordStrong]=useState('')
+//Google
+async function handleGoogleLoginSuccess(credentialResponse){
+    console.log('Google Login Response:', credentialResponse);
+try{
+    const response = await fetch (`${url}users/google-auth`,{
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+            credential: credentialResponse.credential, 
+          
+          }),
+          credentials: 'include', 
+        });
+  const result= await response.json()
+  if(!result.success){
+    setFormError(true)
+    setAlertText(result.message)
+    setName('')
+    setEmail('')
+    setPassword('')
+    setPassword2('')
+
+    setTimeout(() => {
+     
+        setFormError(false)
+    }, 3000)
+    return
+}
+
+setUserData (result.userData)
+setIsLogin(true)
+setFormSuccess(true)
+setAlertText(result.message)
+setName('')
+setEmail('')
+setPassword('')
+setPassword2('')
+setLoginErfotglech(true)
+setTimeout(() => {
+setFormSuccess(false)
+
+setLoginModus(false)
+navigate('/home')
+}, 2000)
+}catch(e){
+console.log(e)
+}
+}
+
+
+
+
+
+
+
 
 //Login function
     async function onSubmitHandle(e) {
@@ -89,6 +147,11 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
 
 
  //Register funktion   
+ 
+ 
+
+
+
    async function onSubmitHandleSignUp(e) {
         e.preventDefault()
         if (!email || !password || !password2 || !name) {
@@ -214,6 +277,16 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
             
         }, [password2, password])
 
+
+
+
+
+        
+    
+        
+
+
+
         return (<>
 
 
@@ -312,16 +385,17 @@ const [isPasswordStrong, setIsPasswordStrong]=useState('')
                                     <span className=" mx-1 py-2">oder</span>
                                     <span className="border-b-2 w-28 inline-block"></span>
                                 </div>
-                                <GoogleLogin
-  onSuccess={(credentialResponse) => {
-    if (credentialResponse.credential) {
-      console.log("Credential erhalten:", credentialResponse.credential);
-    } else {
-      console.log("Keine Credentials erhalten");
-    }
-  }}
-  onError={() => console.log('Login fehlgeschlagen')}
-/>
+                              
+     <GoogleLogin
+       onSuccess={credentialResponse => {
+        handleGoogleLoginSuccess(credentialResponse)
+      
+       }}
+       onError={() => {
+         console.log('Login Failed');
+       }}
+     />
+
 
                             </div>
                             <div className="flex justify-end gap-2 mt-2 text-sm">

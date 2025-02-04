@@ -109,9 +109,9 @@ fetchNotiz()
    
             <>
              {notiz?
-    <div className="mt-20 flex flex-col items-center mx-20 "> 
-    <div>
-    <div className="flex items-center justify-between">
+    <div className="mt-20 flex flex-col items-center mx-20 mb-20 "> 
+    <div className="m-0 w-6/12 ">
+    <div className="flex items-center justify-between ">
    
    
     <div>

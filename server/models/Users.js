@@ -49,12 +49,18 @@ const userSchema=new Schema({
         }
 
     }, 
+
     notizenId:[
         {
             type:Schema.Types.ObjectId,
             ref: 'notiz'
         }
-    ]
+    ],
+    authSource: {
+     type: String,
+     enum: ["self", "google"],
+     default: "self"
+   }
 
 })
 userSchema.methods.toJSON=function(){

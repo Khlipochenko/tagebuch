@@ -7,12 +7,53 @@ import nodemailer from "nodemailer";
 import dotenv from 'dotenv'
 import bcrypt from 'bcryptjs'
 import { createToken } from "../utils/jwt.js";
+import {OAuth2Client} from 'google-auth-library'
 dotenv.config()
+//google-auth
+const client=new OAuth2Client()
+export const googleAuth=async(req,res,next)=>{
+    const { credential, client_id } = req.body;
+    try {
+        // Verify the ID token with Google's API
+      const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: client_id,
+    });
+    if(!ticket){
+      return  res.status(400).json({success:false, message:'Ungültiger Token'});
+    }
+    const payload = ticket.getPayload();
+    const { email, given_name, family_name,exp, ...rest } = payload;
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      // Create a new user if they don't exist
+      user = await User.create({
+        email,
+        name: `${given_name} ${family_name}`,
+        authSource: 'google',
+      });
+    }
+    const token=createToken({ email,
+        name: user.name, 
+        authSource: user.authSource,_id:user._id})
+      res.status(200).cookie('tagebuch', token, {
+        httpOnly: true,
+        secure: false, 
+        sameSite:"lax",
+        maxAge: 3600000, // 1 hour in milliseconds
+      }).json({ success: true, message: `Willkommen ${user.name[0].toUpperCase()+user.name.slice(1)}`, userData:user });
+    } catch (e) {
+      next(e)
+    } 
+}
+
 //Resend für Email
-const resend = new Resend(process.env.RESEND_API_KEY)
+//const resend = new Resend(process.env.RESEND_API_KEY)
 const MY_EMAIL = process.env.MY_EMAIL;
 const MY_PASSWORD = process.env.MY_PASSWORD;
 //Regestrieren
+
 export const userRegistirieren = async (req, res, next) => {
     try {
         const { name, email, password } = req.body
@@ -131,6 +172,7 @@ export const userLogin=async(req,res,next)=>{
         }
   //      console.log('user.password',user.password)
  //       console.log('vergleichen:',  bcrypt.compareSync(password, user.password))
+ if(user.authSource==='self'){
         if(!bcrypt.compareSync(password, user.password)){
            return res.status(401). json({success:false,message: "Passwort ist nicht korrekt!"})
         }
@@ -146,6 +188,11 @@ const token=createToken(user.toJSON())
   })
   return res.status(200).json({ success: true, message: `Willkommen ${user.name[0].toUpperCase()+user.name.slice(1)}`, userData:user });
     }
+else if(user.authSource==='google'){
+    return res.status(401). json({success:false,message: "Bitte melden Sie sich mit Ihrem Google-Konto an."})  
+}
+}
+  
     catch(e){
         next(e)
     }
@@ -179,6 +226,7 @@ export const logout = async (req, res, next) => {
 //Notiz speichern
 export const notizSchreiben = async (req, res, next) => {
    const userId=req.user._id
+   
     const images = req.files
 
     const { title, text, datum,onlyText } = req.body
