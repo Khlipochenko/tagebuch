@@ -52,7 +52,7 @@ useEffect(() => {
 
       <button className=' right-8 bottom-20 fixed flex items-center justify-center drop-shadow-lg w-14 aspect-square rounded-full bg-rose-700  text-white sm:hover:bg-red-900 text-3xl' onClick={()=>navigate('/write')}>+</button>
 
-{notizen.length>0?<div className='flex w-5/6'>
+{notizen.length>0?<div className='flex w-5/6 max-sm:w-full'>
   {filterData.length>0?
 <ul className='flex-grow mt-2'>
   
