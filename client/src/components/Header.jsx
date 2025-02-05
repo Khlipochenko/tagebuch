@@ -4,11 +4,11 @@ import { useContext } from 'react'
 import { AppContext } from '../context/AppContext'
 import { LoginUser } from './LoginUser'
 import { Logout } from './Logout'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 export const Header=()=>{
 const{isLogin,
   userData, loginModus, setLoginModus}=useContext(AppContext)
-  
+  const location = useLocation();
 
 
    return(
@@ -21,8 +21,8 @@ const{isLogin,
 {isLogin?
 (<div className='flex gap-4 items-center '>
 <p className='max-sm:hidden  text-slate-100 first-letter:uppercase  '> Hallo, {userData.name[0].toUpperCase()+userData.name.slice(1)} </p>
-
- <NavLink to='/home'  className='drop-shadow-lg px-4  py-1 rounded bg-rose-700  text-white sm:hover:bg-red-900 w-20 min-sm:hidden'>Zurück</NavLink>
+{location.pathname !== "/home" && 
+ <NavLink to='/home'  className='drop-shadow-lg px-4  py-1 rounded bg-rose-700  text-white sm:hover:bg-red-900 w-20 min-sm:hidden'>Zurück</NavLink>}
  <Logout></Logout>
     </div>):(
 
