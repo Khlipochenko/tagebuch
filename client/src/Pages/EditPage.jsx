@@ -213,7 +213,7 @@ useEffect(() => {
       
 {notiz&&
     <div className=" min-h-screen my-20 ">
-    <form onSubmit={(e)=>handleOnSubmit(e)} className="flex flex-col items-center justify-center w-2/4 mx-auto mt-12">
+    <form onSubmit={(e)=>handleOnSubmit(e)} className="flex flex-col items-center justify-center w-2/4 mx-auto mt-12 max-sm:w-4/5">
       <label className="self-start" for="date">
         Datum:
         <input
