@@ -39,7 +39,7 @@ export const googleAuth=async(req,res,next)=>{
         authSource: user.authSource,_id:user._id}, '1h')
       res.status(200).cookie('tagebuch', token, {
         httpOnly: true,
-        secure: false, 
+        secure: true, 
         sameSite:"lax",
         maxAge: 3600000, // 1 hour in milliseconds
       }).json({ success: true, message: `Willkommen ${user.name[0].toUpperCase()+user.name.slice(1)}`, userData:user });
@@ -74,7 +74,7 @@ export const userRegistirieren = async (req, res, next) => {
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
-            secure: false,
+            secure: true,
             auth: {
               user: MY_EMAIL,
               pass: MY_PASSWORD,
