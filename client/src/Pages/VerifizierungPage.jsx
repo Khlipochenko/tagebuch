@@ -1,16 +1,18 @@
 import {NavLink,  useParams} from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { AppContext } from '../context/AppContext'
 export const VerifizierungPage=()=>{
 const {ver}=useParams()
     
  
     const [state, setState]=useState('Verifizierung ist nicht erfolgreich')
     const [isVirify, setIsVirify]=useState(false)
+    const {url}=useContext(AppContext)
     useEffect(()=>{
         const verifyUser=async()=>{
          
             try{
-                const response= await fetch(`http://localhost:8000/users/verify/${ver}`)
+                const response= await fetch(`${url}users/verify/${ver}`)
             const data=await response.json()
             if(data.success){
 
