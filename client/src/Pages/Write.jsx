@@ -83,7 +83,7 @@ if(descriptionText.length<2){
         setIsloading(false)
         setFormSuccess(true)
         setAlertText(result.message)
-   
+        fetchNotizen()
         setTimeout(()=>{
           quillRef.current.root.innerHTML=''
           setTitle('')
@@ -92,7 +92,7 @@ if(descriptionText.length<2){
           setAlertZeigen(false)
           setFormSuccess(false)
           setAlertText('')
-          fetchNotizen()
+         
           navigate('/')
         }, 2000)
          
