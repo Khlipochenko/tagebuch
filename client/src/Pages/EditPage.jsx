@@ -280,7 +280,7 @@ useEffect(() => {
       </div>
     </form>
 
-    <NavLink to='/home'  className='drop-shadow-lg px-4  py-1 rounded bg-rose-700  text-white sm:hover:bg-red-900 w-20 fixed bottom-20 right-7 max-sm:top-3 max-sm:right-20 max-sm:bottom-0'>Zurück</NavLink>
+    <NavLink to='/home'  className='drop-shadow-lg px-4  py-1 rounded bg-rose-700  text-white sm:hover:bg-red-900 w-20 fixed bottom-20 right-7 max-sm:hidden'>Zurück</NavLink>
 </div>}</>
   );
 };
