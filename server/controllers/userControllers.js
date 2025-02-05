@@ -40,7 +40,7 @@ export const googleAuth=async(req,res,next)=>{
       res.status(200).cookie('tagebuch', token, {
         httpOnly: true,
         secure: true, 
-        sameSite:"lax",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 3600000, // 1 hour in milliseconds
       }).json({ success: true, message: `Willkommen ${user.name[0].toUpperCase()+user.name.slice(1)}`, userData:user });
     } catch (e) {

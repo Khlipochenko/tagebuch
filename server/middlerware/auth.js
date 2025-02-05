@@ -1,8 +1,10 @@
 import { verifyToken } from "../utils/jwt.js";
+
 export function authorizeJwt(req, res, next) {
   const token = req.cookies.tagebuch;
   console.log("tagebuch token", token);
-  console.log(req.cookies);
+  console.log({ cookies: req.cookies });
+  console.log({ req });
   if (!token) {
     return res
       .status(401)
