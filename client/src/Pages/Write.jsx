@@ -61,7 +61,7 @@ if(descriptionText.length<2){
     try {
       setAlertZeigen(true)
       setIsloading(true)
-      const response = await fetch(`${url}users/write`, {
+      const response = await fetch(`${url}notizen/write`, {
         method: "POST",
         credentials:'include',
         body: formData,

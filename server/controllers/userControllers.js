@@ -249,47 +249,47 @@ export const logout = async (req, res, next) => {
   }
 };
 
-//Notiz speichern
-export const notizSchreiben = async (req, res, next) => {
-  const userId = req.user._id;
+// //Notiz speichern
+// export const notizSchreiben = async (req, res, next) => {
+//   const userId = req.user._id;
 
-  const images = req.files;
+//   const images = req.files;
 
-  const { title, text, datum, onlyText } = req.body;
+//   const { title, text, datum, onlyText } = req.body;
 
-  try {
-    const user = await User.findById(userId);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User nicht gefunden" });
-    }
+//   try {
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "User nicht gefunden" });
+//     }
 
-    let uploadedImages = [];
-    if (images && images.length > 0) {
-      for (let i = 0; i < images.length; i++) {
-        const uploadResult = await cloudinary.uploader.upload(images[i].path); // Der 'path' wird verwendet, um das Bild hochzuladen
-        uploadedImages.push(uploadResult.secure_url); // Die URL des hochgeladenen Bildes speichern
-      }
-    }
+//     let uploadedImages = [];
+//     if (images && images.length > 0) {
+//       for (let i = 0; i < images.length; i++) {
+//         const uploadResult = await cloudinary.uploader.upload(images[i].path); // Der 'path' wird verwendet, um das Bild hochzuladen
+//         uploadedImages.push(uploadResult.secure_url); // Die URL des hochgeladenen Bildes speichern
+//       }
+//     }
 
-    const newNotiz = await Notiz.create({
-      title: title,
-      text: text,
-      datum: datum,
-      userId: user._id,
-      images: uploadedImages,
-      onlyText: onlyText,
-    });
-    user.notizenId.push(newNotiz._id);
-    await user.save();
-    return res
-      .status(201)
-      .json({ success: true, message: "Neuer Eintrag gespeichert" });
-  } catch (error) {
-    next(error);
-  }
-};
+//     const newNotiz = await Notiz.create({
+//       title: title,
+//       text: text,
+//       datum: datum,
+//       userId: user._id,
+//       images: uploadedImages,
+//       onlyText: onlyText,
+//     });
+//     user.notizenId.push(newNotiz._id);
+//     await user.save();
+//     return res
+//       .status(201)
+//       .json({ success: true, message: "Neuer Eintrag gespeichert" });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 // RESET PASSWORD
 //1. Prüfen email schiken token als antwort

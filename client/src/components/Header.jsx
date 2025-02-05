@@ -1,6 +1,4 @@
 import { useContext } from 'react'
-
-
 import { AppContext } from '../context/AppContext'
 import { LoginUser } from './LoginUser'
 import { Logout } from './Logout'
