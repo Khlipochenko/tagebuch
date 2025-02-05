@@ -199,7 +199,7 @@ export const userLogin = async (req, res, next) => {
       res.cookie("tagebuch", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "lax",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         expires: new Date(Date.now() + 900000),
       });
       return res
@@ -241,7 +241,7 @@ export const logout = async (req, res, next) => {
     res.clearCookie("tagebuch", {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
     res.end();
   } catch (e) {
