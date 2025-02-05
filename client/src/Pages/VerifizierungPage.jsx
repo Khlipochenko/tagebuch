@@ -10,6 +10,8 @@ const {ver}=useParams()
     const {url}=useContext(AppContext)
     useEffect(()=>{
         const verifyUser=async()=>{
+            console.log('ver',ver),
+            console.log(url)
          
             try{
                 const response= await fetch(`${url}users/verify/${ver}`)
