@@ -67,7 +67,17 @@ if(descriptionText.length<2){
         body: formData,
         
       });
-    
+    if(!response.ok){
+      setIsloading(false)
+      setFormError(true)
+      setAlertText('Error')
+      setTimeout(()=>{
+       setFormError(false),
+       setAlertText('')
+       setAlertZeigen(false)
+       navigate('/')
+      }, 2000)
+    }
       const result = await response.json()
        if (!result.success) {
       setIsloading(false)
