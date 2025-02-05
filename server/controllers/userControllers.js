@@ -74,7 +74,7 @@ export const userRegistirieren = async (req, res, next) => {
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
-            secure: true,
+            secure: false,
             auth: {
               user: MY_EMAIL,
               pass: MY_PASSWORD,
