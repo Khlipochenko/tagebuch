@@ -30,7 +30,7 @@ const {ver}=useParams()
             }
         }
     verifyUser()
-    },[ver]
+    },[]
 
 
 )
