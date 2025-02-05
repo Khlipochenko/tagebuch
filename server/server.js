@@ -14,7 +14,7 @@ app.use(express.json())
 
 app.use(cors( {
     credentials: true,
-    origin: ['https://tagebuch-server.vercel.app'],
+    origin: [process.env.URL],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }))
