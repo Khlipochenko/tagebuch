@@ -12,10 +12,6 @@ userRouter.post('/login', userLogin)
 userRouter.get('/verify/:ver', verifyUser)
 userRouter.get('/',authorizeJwt, getUserData  )
 userRouter.get('/logout', logout)
-
 userRouter.post('/google-auth',googleAuth )
-
-
 userRouter.post('/reset-password-email',requestPasswordReset)
-
 userRouter.post('/reset-password/:token',resetPassword )
