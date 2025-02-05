@@ -8,10 +8,11 @@ const {ver}=useParams()
     const [state, setState]=useState('Verifizierung ist nicht erfolgreich')
     const [isVirify, setIsVirify]=useState(false)
     const {url}=useContext(AppContext)
+    console.log('ver',ver),
+            console.log(url)
     useEffect(()=>{
         const verifyUser=async()=>{
-            console.log('ver',ver),
-            console.log(url)
+            
          
             try{
                 const response= await fetch(`${url}users/verify/${ver}`)
