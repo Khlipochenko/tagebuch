@@ -67,6 +67,7 @@ if(descriptionText.length<2){
         body: formData,
         
       });
+    
       const result = await response.json()
        if (!result.success) {
       setIsloading(false)
