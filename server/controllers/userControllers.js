@@ -69,6 +69,7 @@ export const userRegistirieren = async (req, res, next) => {
 
 
         //VERIFICATION
+        const URL=process.env.URL
         const verification = await UserVarification.create({ userId: newUser._id })
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -82,7 +83,7 @@ export const userRegistirieren = async (req, res, next) => {
           const htmlContent = `
         <h3>Willkommen bei Tagebuch</h3>
         <p>Bitte bestätigen Sie diese E-Mail-Adresse, indem Sie auf folgenden Link klicken:</p>
-        <a href="http://localhost:5173/verify/${verification._id}">
+        <a href="${URL}/verify/${verification._id}">
                Link
            </a>
         <p>Mit freundlichen Grüßen,</p>
@@ -251,6 +252,7 @@ export const notizSchreiben = async (req, res, next) => {
 // RESET PASSWORD
 //1. Prüfen email schiken token als antwort
 export const requestPasswordReset=async(req,res,next)=>{
+  const URL=process.env.URL
     const { email } = req.body;
     try{
         const user=await User.findOne({email})
@@ -271,7 +273,7 @@ export const requestPasswordReset=async(req,res,next)=>{
       
         <p>Sie erhalten diese E-Mail, weil Sie (oder jemand anderes) die Zurücksetzung des Passworts für Ihr Konto angefordert haben.</p>
        <p>Bitte klicken Sie auf den folgenden Link oder fügen Sie ihn in Ihren Browser ein, um den Vorgang abzuschließen</p>
-        <a href="http://localhost:5173/reset/${token}">
+        <a href="${URL}/reset/${token}">
                Link
            </a>
         <p>Wenn Sie diese Anfrage nicht gestellt haben, ignorieren Sie bitte diese E-Mail und Ihr Passwort bleibt unverändert.</p>
