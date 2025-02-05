@@ -1,11 +1,10 @@
-import { useContext } from "react"
-import { AppContext } from "../context/AppContext"
+
 import { GoDotFill } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 export const EmailBestatigungSeite=()=>{
  
     return(
-        <div className="container flex flex-col items-center mt-14 gap-4 mx-6  text-green-900 text-lg max-sm:text-sm max-sm:px-14">
+        <div className="container flex flex-col items-center mt-24 gap-4 mx-6  text-green-900 text-lg max-sm:text-sm max-sm:px-14">
         <h2 className=" text-3xl mb-5 text-lime-950 max-sm:text-lg">Danke  für deine Registrierung!</h2>
 
        <p className="text-xl max-sm:text-sm"> Fast geschafft! Bitte überprüfe dein E-Mail-Postfach . Wir haben dir eine Bestätigungs-E-Mail geschickt.</p>

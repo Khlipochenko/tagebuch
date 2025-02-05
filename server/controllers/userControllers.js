@@ -2,11 +2,11 @@ import { v2 as cloudinary } from "cloudinary";
 import { User } from "../models/Users.js";
 import { Notiz } from '../models/Notiz.js'
 import { UserVarification } from "../models/UserVerifivation.js";
-import { Resend } from "resend";
+
 import nodemailer from "nodemailer";
 import dotenv from 'dotenv'
 import bcrypt from 'bcryptjs'
-import { createToken } from "../utils/jwt.js";
+import { createToken, verifyToken } from "../utils/jwt.js";
 import {OAuth2Client} from 'google-auth-library'
 dotenv.config()
 //google-auth
@@ -20,7 +20,7 @@ export const googleAuth=async(req,res,next)=>{
       audience: client_id,
     });
     if(!ticket){
-      return  res.status(400).json({success:false, message:'Ungültiger Token'});
+      return  res.status(401).json({success:false, message:'Ungültiger Token'});
     }
     const payload = ticket.getPayload();
     const { email, given_name, family_name,exp, ...rest } = payload;
@@ -36,7 +36,7 @@ export const googleAuth=async(req,res,next)=>{
     }
     const token=createToken({ email,
         name: user.name, 
-        authSource: user.authSource,_id:user._id})
+        authSource: user.authSource,_id:user._id}, '1h')
       res.status(200).cookie('tagebuch', token, {
         httpOnly: true,
         secure: false, 
@@ -49,7 +49,6 @@ export const googleAuth=async(req,res,next)=>{
 }
 
 //Resend für Email
-//const resend = new Resend(process.env.RESEND_API_KEY)
 const MY_EMAIL = process.env.MY_EMAIL;
 const MY_PASSWORD = process.env.MY_PASSWORD;
 //Regestrieren
@@ -105,27 +104,7 @@ export const userRegistirieren = async (req, res, next) => {
           main().catch(console.error);
 
 
-        //
-         
-
-//         const { data, error } = await resend.emails.send({
-//             from: "Acme <onboarding@resend.dev>",
-//             to: [email],
-//             subject: "Email verifizieren",
-//             html: `
-//     <h1>Willkommen bei Tagebuch</h1>
-//       <p>
-//           <a href=`http://localhost:5173/verify/${verification._id}`>
-//               Klicke hier, um dein Konto zu verifizieren
-//           </a>
-//       </p>
-//     `,
-//         });
-
-//         if (error) {
-//             return res.status(400).json({ error });
-//         }
-// console.log(data)
+        
          return res.status(201).json({ success: true, message: 'Herzlichen Glückwunsch zur Resistrierung. Bitte prüffen Sie Ihre Email!' })
      } catch (e) {
         next(e);
@@ -179,7 +158,7 @@ export const userLogin=async(req,res,next)=>{
         if(!user.verified){
             return res.status(401). json({success:false,message: "Sie haben Ihre E-Mail nicht verifiziert."})  
         }
-const token=createToken(user.toJSON())
+const token=createToken(user.toJSON(), '1h')
  res.cookie("tagebuch", token, {
     httpOnly: true,
     secure: true,
@@ -235,7 +214,7 @@ export const notizSchreiben = async (req, res, next) => {
     try {
         const user = await User.findById(userId)
         if(!user){
-            return   res.status(404).json({ success: false, message: 'User not found' })
+            return   res.status(404).json({ success: false, message: 'User nicht gefunden' })
         }
       
             let uploadedImages = [];
@@ -264,5 +243,83 @@ export const notizSchreiben = async (req, res, next) => {
     } catch (error) {
        next(error)
     }
+
+}
+
+
+
+// RESET PASSWORD
+//1. Prüfen email schiken token als antwort
+export const requestPasswordReset=async(req,res,next)=>{
+    const { email } = req.body;
+    try{
+        const user=await User.findOne({email})
+        if(!user){
+            return res.status(404).json({success: false, message:`User mit ${email} nicht gefunden`})
+        }
+        const token=createToken(user.toJSON(),'2m')
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
+            auth: {
+              user: MY_EMAIL,
+              pass: MY_PASSWORD,
+            },
+          });
+          const htmlContent = `
+      
+        <p>Sie erhalten diese E-Mail, weil Sie (oder jemand anderes) die Zurücksetzung des Passworts für Ihr Konto angefordert haben.</p>
+       <p>Bitte klicken Sie auf den folgenden Link oder fügen Sie ihn in Ihren Browser ein, um den Vorgang abzuschließen</p>
+        <a href="http://localhost:5173/reset/${token}">
+               Link
+           </a>
+        <p>Wenn Sie diese Anfrage nicht gestellt haben, ignorieren Sie bitte diese E-Mail und Ihr Passwort bleibt unverändert.</p>
+        <p>Mit freundlichen Grüßen,</p>
+        <p> Ihres Team</p>
+        `;
+          async function main() {
+            const info = await transporter.sendMail({
+              from: " <teamsendemail@gmail.com>", // sender address
+              to: email, // list of receivers
+              subject: "Passwort zurücksetzen Anfrage", // Subject line
+        
+              html: htmlContent, // html body
+            });
+        
+            console.log("Message sent: %s", info.messageId);
+            // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+          }
+        
+      await    main().catch(console.error);
+    
+    return res.status(200).json({ success: true, message: 'Passwort zurücksetzen Link gesendet. Bitte prüfen Sie Ihre Email!' })
+} catch (e) {
+   next(e);
+}}
+//reset password
+export const resetPassword=async(req,res,next)=>{
+    const newPassword=req.body.password
+  try{
+    const token=req.params.token
+    const payload=verifyToken(token)
+    console.log(payload)
+    if(!payload){
+        return res.status(401).json({success:false, message:'Ungültiger Token'})
+    }
+    if (payload.expired) {
+      return res.status(401).json({ success: false, message: 'Der Link ist abgelaufen. Bitte fordere einen neuen an.' });
+  }
+
+    const user= await User.findById(payload._id)
+    if(!user){
+return res.status(404).json({ success: false, message: 'User nicht gefunden' })
+    }
+user.password=newPassword
+await user.save()
+return res.status(200).json({ success: true, message: 'Passwort wurde geändert' })
+  }catch(e){
+    next(e)
+  }
 
 }

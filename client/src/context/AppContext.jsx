@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 export const AppContext=createContext()
 export const AppContextProvider=({children})=>{
@@ -7,8 +7,8 @@ export const AppContextProvider=({children})=>{
     const [userData, setUserData]=useState([])
     const [loginModus, setLoginModus]=useState(false)
     const [notizen, setNotizen]=useState([])
- //  const url='https://tagebuch-server.vercel.app/'
-    const url= 'http://localhost:8000/'
+   const url='https://tagebuch-server.vercel.app/'
+//    const url= 'http://localhost:8000/'
 
     const fetchUserData=async()=>{
         try{

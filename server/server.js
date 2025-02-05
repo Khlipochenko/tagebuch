@@ -4,8 +4,7 @@ import cors from 'cors'
 import {connect }from './utils/connect.js'
 import { userRouter } from './routes/userRouter.js'
 import cookieParser from "cookie-parser";
-// import { clerkWebhooks } from './controllers/webhooks.js'
-// import { clerkMiddleware } from '@clerk/express'
+
 import { connectCloudinary } from './utils/cloudinary.js'
 
 import { notizRouter } from './routes/notizRouter.js'
@@ -21,17 +20,11 @@ app.use(cors( {
   }))
 app.use(cookieParser())
 await connectCloudinary()
-// const clerkOptions = {
-//     publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
-//   };
-  
-//   app.use(clerkMiddleware(clerkOptions));
-// const PUBLISHABLE_KEY = process.env.CLERK_PUBLISHABLE_KEY;
-// console.log(PUBLISHABLE_KEY);
+
 app.use('/users', userRouter)
 app.use('/notizen', notizRouter)
 app.get('/',(req,res)=>res.send('API Working'))
-// app.post('/webhooks', clerkWebhooks)
+
 app.use((err, req,res,next)=>{
     console.log(err);
     return res.sendStatus(500)

@@ -2,13 +2,24 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
 
-export function createToken(payload){
+export function createToken(payload, time){
     const token=jwt.sign(payload, process.env.JWT_SECRET,{
- expiresIn: '1h'
+ expiresIn: time
+
     });
     return token
 }
 export function verifyToken(token){
-    const payload=jwt.verify(token, process.env.JWT_SECRET)
-    return payload
+    try{
+   return jwt.verify(token, process.env.JWT_SECRET)
+    
+    }catch(e){
+        if (e.name === 'TokenExpiredError') {
+            return { expired: true }; // Spezielle Rückgabe für abgelaufene Tokens
+        }
+        console.log(e); // Andere Fehler loggen
+        return null;
+
+    }
+   
 }

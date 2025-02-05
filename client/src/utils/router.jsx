@@ -8,6 +8,9 @@ import { VerifizierungPage } from "../Pages/VerifizierungPage";
 import { EmailBestatigungSeite } from "../Pages/EmailBestärigungPage";
 import { NotizPage } from "../Pages/NotizPage";
 import { EditPage } from "../Pages/EditPage";
+
+import { ResetPassword } from "../Pages/ResetPassword";
+import { EmailCheckPage } from "../Pages/EmailCheckPage";
 export const router=createBrowserRouter([{
 
     path:'/',
@@ -40,6 +43,16 @@ children:[
     },{
         path:"/edit/:id",
         element:<EditPage/>
+    },
+    {
+        path:"/reset/:token",
+        element:<ResetPassword></ResetPassword>
+    
+    },
+    {
+        path:"/send-email",
+        element:<EmailCheckPage></EmailCheckPage>
+    
     }
     
 ]

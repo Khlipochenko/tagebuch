@@ -1,13 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
-import bild from '../assets/bild.jpeg'
 import { AppContext } from '../context/AppContext'
-
 import { useNavigate } from 'react-router-dom'
 import { Notizli } from '../components/Notizli'
-//import Calendar from 'react-calendar'
-//import 'react-calendar/dist/Calendar.css';
 import { FaSearch } from "react-icons/fa";
-import { SlCalender } from "react-icons/sl";
+
 export const Home=()=>{
  const navigate=useNavigate()
     const {isLogin, setIsLogin,userData, loginModus, setLoginModus, notizen, setNotizen}=useContext(AppContext)
@@ -29,6 +25,7 @@ if(e.target.value==''){
 
 setFilterDate(newFilterData)
 
+
 }
 useEffect(() => {
   setFilterDate(notizen);
@@ -48,7 +45,9 @@ useEffect(() => {
 <input className=' mx-2 w-3/4 outline-none' type='text' placeholder='suchen' value={searchValue} onChange={(e)=>setSearchValue(e.target.value)}/>
 <button className='drop-shadow-lg px-4 h-full  rounded-md bg-teal-500  text-white sm:hover:bg-teal-900'>suchen</button>
 </form>}
+
       <button className='   w-40  drop-shadow-lg px-4  py-1 rounded-md bg-rose-700  text-white sm:hover:bg-red-900 max-sm:hidden' onClick={()=>navigate('/write')}>Schreib jetzt +</button>
+
 </div>
 
       <button className=' right-8 bottom-20 fixed flex items-center justify-center drop-shadow-lg w-14 aspect-square rounded-full bg-rose-700  text-white sm:hover:bg-red-900 text-3xl' onClick={()=>navigate('/write')}>+</button>
@@ -65,7 +64,7 @@ useEffect(() => {
 </div>
 :
 <div className='mx-auto'>
-  <h1>Du hast noch keine Entrage</h1>
+  <h1 className='text-2xl  mt-10 font-medium'>Du hast noch keine Entrage</h1>
 </div>
 }
       </div>):(

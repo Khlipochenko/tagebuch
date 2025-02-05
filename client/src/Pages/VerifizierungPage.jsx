@@ -1,4 +1,4 @@
-import {NavLink,  useNavigate, useParams} from 'react-router-dom'
+import {NavLink,  useParams} from 'react-router-dom'
 import { useEffect, useState } from 'react'
 export const VerifizierungPage=()=>{
 const {ver}=useParams()
@@ -18,10 +18,7 @@ const {ver}=useParams()
                 setIsVirify(true)
                
             }
-            // else {
-              
-            //     setState('Verifizierung ist nicht erfolgreich');
-            // }
+          
             }catch(e){
 
                console.error(error);
@@ -35,8 +32,8 @@ const {ver}=useParams()
 )
     return(
         <>
-        <div >
-        <h1 className=' text-center text-2xl font-medium mt-10 text-green-900'>Verifizierung</h1>
+        <div className='mt-24' >
+        <h1 className=' text-center text-2xl font-medium  text-green-900'>Verifizierung</h1>
         {isVirify?<div className='contaiter gap-2 flex items-center mt-10 flex-col h-screen text-lg'><p className=' text-green-600 font-medium'>{state} </p>
         <p> Jetzt gehen Sie bitte zur Homeseite und da konnen sie sich einloggen!
        

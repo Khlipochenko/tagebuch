@@ -5,6 +5,7 @@ import { AppContext } from "../context/AppContext";
 import { GoogleLogin } from '@react-oauth/google';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from "react-router-dom";
+import { Request } from "./Request";
 
 
 export const LoginUser = () => {
@@ -301,7 +302,7 @@ console.log(e)
                         {formSuccess && <Alert severity="success" className=" my-2">{alertText}</Alert>}
                        {!LoginErforglech&& <div className="bg-white rounded-xl  p-10   w-96 relative">
                             <h1 className=" text-center text-teal-700 font-medium pb-2 uppercase">{state}</h1>
-                            {state === 'Login' ?
+                            {state === 'Login' &&
                                 <form onSubmit={(e) => onSubmitHandle(e)} className="flex flex-col gap-2" >
                                     <span onClick={() => setLoginModus(false)} className="absolute top-1 right-4 cursor-pointer  text-teal-700 sm:hover:text-red-800 font-medium">x</span>
                                     <label htmlFor="email"> Email</label>
@@ -316,10 +317,17 @@ console.log(e)
                                        <button type="button" className=" sm:hover:text-red-800 font-medium" onClick={() => setPasswortZeigen1(prev => !prev)}>{passwortZeigen1 ? <FaRegEye />: <FaRegEyeSlash />}</button></div>
 
                                     <button type="onsubmit" className="drop-shadow-lg px-4 mt-2  py-1 rounded bg-teal-500  text-white sm:hover:bg-teal-900">{state}</button>
-                                    <p className="text-end text-sm ">Passwort vergessen?</p>
-                                </form> :
+                                    <button className="text-end text-sm text-blue-500 cursor-pointer" onClick={() => {
+                                            setState('Senden Email')
+                                         setEmail('')
+                                        setPassword('')
+                                        setPassword2('')
+                                        setName('')}}>Passwort vergessen?</button>
+                                </form> }
 
-//REGESTRIRUNGFORM
+{//REGESTRIRUNGFORM
+state === 'Sign Up' &&
+
                                 <form onSubmit={(e) => onSubmitHandleSignUp(e)} className="flex flex-col gap-2" >
                                     <span onClick={() => setLoginModus(false)} className="absolute top-1 right-4 cursor-pointer  text-teal-700 sm:hover:text-red-800 font-medium">x</span>
                                     <label htmlFor="name"> Vor- und Nachname</label>
@@ -379,6 +387,8 @@ console.log(e)
 
                                 </form>
                             }
+                            {state!=='Senden Email'&&
+                            
                             <div className="flex flex-col items-center justify-center gap-2">
                                 <div className=" flex items-center justify-center ">
                                     <span className="border-b-2 w-28 inline-block">   </span>
@@ -386,21 +396,21 @@ console.log(e)
                                     <span className="border-b-2 w-28 inline-block"></span>
                                 </div>
                               
-     <GoogleLogin
+     <GoogleLogin className='mx-auto '
        onSuccess={credentialResponse => {
         handleGoogleLoginSuccess(credentialResponse)
       
        }}
        onError={() => {
          console.log('Login Failed');
-       }}
-     />
+       }} />
+  
 
 
-                            </div>
+                            </div>  }
                             <div className="flex justify-end gap-2 mt-2 text-sm">
 
-                                {state === 'Login' ?
+                                {state === 'Login' &&
                                     <> <p className="text-neutral-700">Noch kein Konto haben?</p>
                                         <button type="button" className="text-blue-500 cursor-pointer" onClick={() => {
                                         setState('Sign Up')
@@ -409,7 +419,8 @@ console.log(e)
                                         setPassword2('')
                                         setName('')
                                         }}>Sign Up</button>
-                                    </> :
+                                    </> }
+                                    {state==='Sign Up'&&
                                     <> <p className="text-neutral-700">Hast du schon ein Konto?</p>
                                         <button type="button" className="text-blue-500 cursor-pointer" onClick={() => {
                                             setState('Login')
@@ -419,13 +430,19 @@ console.log(e)
                                         setName('')
                                         
                                         }}>Login</button>
-                                    </>
-                                }
+                                    </>}
+                                
 
                             </div>
-                        </div>}
-                    </div>}
+                        
+                    
+{//Reset
+state==='Senden Email'&&
+    <Request setState={setState} setEmail={setEmail} email={email} setLoginModus={setLoginModus} setFormError={setFormError} setAlertText={setAlertText} setFormSuccess={setFormSuccess}></Request>
 
+}
+</div>}
+</div>}
 
             </div>
         </>)

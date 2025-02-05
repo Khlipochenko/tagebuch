@@ -1,28 +1,15 @@
-import { useContext, useEffect, useState } from 'react'
-import logo from '../assets/logo.png'
-//import { SignedIn, SignedOut, SignInButton, useAuth, useClerk, UserButton, useUser } from '@clerk/clerk-react'
+import { useContext } from 'react'
+
+
 import { AppContext } from '../context/AppContext'
 import { LoginUser } from './LoginUser'
 import { Logout } from './Logout'
 
 export const Header=()=>{
-const{isLogin, setIsLogin,
-  userData, setUserData,loginModus, setLoginModus}=useContext(AppContext)
+const{isLogin,
+  userData, loginModus, setLoginModus}=useContext(AppContext)
   
-  //const {user}=useUser()
- // const {openSignIn}=useClerk()
 
- // console.log(user.user.fullName);
-
-  // useEffect(()=>{
-  //  if (userData){
-  //    setIsLogin(true)
-
-  //  }
-  //  else{
-  //    setIsLogin(false)
-  //  }
-  //   },[userData])
 
    return(
     <div className='flex w-full px-3 justify-between shadow-md  py-3 bg-teal-800 fixed z-50'>
@@ -37,7 +24,6 @@ const{isLogin, setIsLogin,
 <Logout></Logout>
 
 
-      {/* <UserButton /> */}
     </div>):(
 
       <button className='drop-shadow-lg px-4  py-1 rounded bg-teal-500  text-white sm:hover:bg-teal-900' onClick={()=>setLoginModus(true)}>Login</button>
