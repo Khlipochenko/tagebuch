@@ -137,6 +137,7 @@ function handleOnClickDeleteImage(index) {
         theme: "snow",
       });
     }
+    window.scrollTo(0,0)
   }, []);
   return (
     <>
