@@ -26,7 +26,11 @@ await connectCloudinary();
 app.use("/users", userRouter);
 app.use("/notizen", notizRouter);
 app.get("/", (req, res) => res.send("API Working"));
+app.use(express.static(path.join(__dirname, 'build'))); // Убедитесь, что сервер отдает статические файлы из папки build
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html')); // Отдайте index.html для всех других маршрутов
+});
 app.use((err, req, res, next) => {
   console.log(err);
   return res.sendStatus(500);
