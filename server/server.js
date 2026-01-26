@@ -20,6 +20,8 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+// 🔥 DAS FEHLT
+app.options("*", cors());
 app.use(cookieParser());
 await connectCloudinary();
 
