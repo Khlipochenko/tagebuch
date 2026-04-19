@@ -59,7 +59,8 @@ app.use(async (req, res, next) => {
     await init();
     next();
   } catch (err) {
-    res.status(500).send("Init failed");
+    console.log("INIT ERROR FULL:", err); // 🔥 ВАЖНО
+    res.status(500).send(err.message);    // покажет ошибку
   }
 });
 
