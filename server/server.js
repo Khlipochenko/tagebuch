@@ -9,7 +9,7 @@ import { v2 as cloudinary } from "cloudinary";
 dotenv.config();
 
 const app = express();
-
+console.log("SERVER ENV:", process.env.MONGODB_URL);
 app.use(express.json());
 
 app.use(
