@@ -34,9 +34,10 @@ app.use((err, req, res, next) => {
   return res.sendStatus(500);
 });
 const PORT = process.env.PORT || 5000;
-console.log(PORT);
-connect().then(() => {
-  app.listen(PORT, () =>
-    console.log(`Server läuft auf http://localhost:${PORT}`)
-  );
-});
+//console.log(PORT);
+//connect().then(() => {
+//  app.listen(PORT, () =>
+//    console.log(`Server läuft auf http://localhost:${PORT}`)
+//  );
+//});
+export default app;
