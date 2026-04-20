@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5175"],
+    origin: ["http://localhost:5175", "https://tagebuch-eta.vercel.app","http://localhost:5174" ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
